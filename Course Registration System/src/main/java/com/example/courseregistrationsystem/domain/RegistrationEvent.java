@@ -15,7 +15,7 @@ public class RegistrationEvent {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @ManyToMany(mappedBy = "registrationEvents")
+    @OneToMany(mappedBy = "registrationEvent")
     private List<RegistrationGroup> registrationGroups;
 
 }

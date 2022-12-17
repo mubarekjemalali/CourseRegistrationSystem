@@ -22,7 +22,11 @@ public class Student {
     private Address HomeAddress;
     @OneToMany
     private List<RegistrationRequest> registrationRequests;
+
     @OneToMany
     private List<Registration> registrations;
+
+    @ManyToOne
+    private RegistrationGroup registrationGroup;
 
 }

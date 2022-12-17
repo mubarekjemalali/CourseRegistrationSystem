@@ -10,10 +10,14 @@ public class RegistrationGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String track;
+    private String semester;
+    private String year;
+
     @OneToMany
     private List<Student> students;
     @OneToMany
     private List<AcademicBlock> academicBlocks;
-    @ManyToMany
-    private List<RegistrationEvent> registrationEvents;
+    @ManyToOne
+    private RegistrationEvent registrationEvent;
 }
