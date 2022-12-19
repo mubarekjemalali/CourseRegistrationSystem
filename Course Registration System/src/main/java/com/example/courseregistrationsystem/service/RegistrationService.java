@@ -1,7 +1,8 @@
 package com.example.courseregistrationsystem.service;
 
 import com.example.courseregistrationsystem.domain.Registration;
-import com.example.courseregistrationsystem.domain.dto.RegistrationDto;
+
+import com.example.courseregistrationsystem.service.dto.RegistrationDto;
 
 import java.util.List;
 

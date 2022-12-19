@@ -1,9 +1,10 @@
 package com.example.courseregistrationsystem.service.impl;
 
 import com.example.courseregistrationsystem.domain.Registration;
-import com.example.courseregistrationsystem.domain.dto.RegistrationDto;
+
 import com.example.courseregistrationsystem.repo.RegistrationRepository;
 import com.example.courseregistrationsystem.service.RegistrationService;
+import com.example.courseregistrationsystem.service.dto.RegistrationDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

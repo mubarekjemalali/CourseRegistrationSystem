@@ -1,7 +1,8 @@
 package com.example.courseregistrationsystem.controller;
 
-import com.example.courseregistrationsystem.domain.dto.RegistrationRequestDto;
+
 import com.example.courseregistrationsystem.service.RegistrationRequestService;
+import com.example.courseregistrationsystem.service.dto.RegistrationRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

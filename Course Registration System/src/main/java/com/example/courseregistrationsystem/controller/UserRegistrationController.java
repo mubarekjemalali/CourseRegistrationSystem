@@ -1,7 +1,8 @@
 package com.example.courseregistrationsystem.controller;
 
-import com.example.courseregistrationsystem.domain.dto.RegistrationDto;
+
 import com.example.courseregistrationsystem.service.RegistrationService;
+import com.example.courseregistrationsystem.service.dto.RegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
