@@ -10,8 +10,9 @@ public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
+    @ManyToOne
     private CourseOffering courseOffering;
-
+    @ManyToOne
+    private Student student;
 
 }

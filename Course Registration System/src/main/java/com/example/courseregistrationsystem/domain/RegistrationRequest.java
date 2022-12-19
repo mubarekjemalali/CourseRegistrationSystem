@@ -10,9 +10,8 @@ public class RegistrationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    // we need to prioritize the registration requests
-    @OneToMany
-    private List<CourseOffering> courseOfferings;
+    private int priority;
+    @ManyToOne
+    private CourseOffering courseOffering;
 
 }

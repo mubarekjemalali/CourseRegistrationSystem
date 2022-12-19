@@ -10,6 +10,6 @@ public class RegistrationRequestDto {
 
     private Long id;
 
-    private List<CourseOfferingDto> courseOfferingDtos;
+    private CourseOfferingDto courseOfferingDto;
 
 }
