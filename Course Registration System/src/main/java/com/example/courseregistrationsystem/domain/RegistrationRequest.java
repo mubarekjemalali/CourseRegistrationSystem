@@ -11,9 +11,13 @@ public class RegistrationRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     // priority number 1 - n, n is the number of courses in the academic block
     private int priorityNumber;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<CourseOffering> courseOfferings;
+
+    private int priority;
+    @ManyToOne
+    private CourseOffering courseOffering;
+
 
 }

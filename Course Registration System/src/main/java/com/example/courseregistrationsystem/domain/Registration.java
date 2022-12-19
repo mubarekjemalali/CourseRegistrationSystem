@@ -10,8 +10,10 @@ public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    private CourseOffering courseOffering;
 
+    @ManyToOne
+    private CourseOffering courseOffering;
+    @ManyToOne
+    private Student student;
 
 }

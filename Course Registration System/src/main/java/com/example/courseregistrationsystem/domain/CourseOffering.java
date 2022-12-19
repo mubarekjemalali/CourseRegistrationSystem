@@ -12,14 +12,20 @@ public class CourseOffering {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
-    @OneToOne
-    private Faculty faculty;
-    @OneToOne
-    private AcademicBlock academicBlock;
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Course> courses;
-    @OneToOne
-    private Registration registrations;
+    private int capacity;
+
     @ManyToOne
-    private RegistrationRequest registrationRequests;
+    @JoinColumn
+    private Faculty faculty;
+    @ManyToOne
+    private AcademicBlock academicBlock;
+    @ManyToOne
+    @JoinColumn
+    private Course course;
+    @OneToMany
+    private List<Registration> registrations;
+    @OneToMany
+    private List<RegistrationRequest> registrationRequests;
 }

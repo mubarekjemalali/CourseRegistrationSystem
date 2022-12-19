@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/registration-events")
+
+
+
+@RestController("/api/v1/registration-events/")
+
 public class RegistrationEventController {
     @Autowired
     private RegistrationEventService registrationEventService;
@@ -31,6 +34,13 @@ public class RegistrationEventController {
     @PutMapping
     public ResponseEntity<RegistrationEventDto> updateRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
         return ResponseEntity.ok().body(registrationEventService.updateRegistrationEvent(registrationEventDto));
+    }
+
+    @PutMapping("/{id}")
+    public void processed(@PathVariable int id, @RequestParam(required = false) boolean processed) {
+        if (processed) {
+            // assign course to students
+        }
     }
 
     // delete registration event
