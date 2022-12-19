@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 public class Registration {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private CourseOffering courseOffering;
 
 

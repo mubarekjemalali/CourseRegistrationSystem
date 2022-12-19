@@ -1,14 +1,13 @@
 package com.example.courseregistrationsystem.service.impl;
 
 import com.example.courseregistrationsystem.domain.RegistrationEvent;
-import com.example.courseregistrationsystem.domain.dto.RegistrationEventDto;
+import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 import com.example.courseregistrationsystem.repo.RegistrationEventRepository;
 import com.example.courseregistrationsystem.service.RegistrationEventService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,7 +19,9 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
 
     @Override
     public RegistrationEventDto createRegistrationEvent(RegistrationEventDto registrationEventDto) {
+        System.out.println("---------service");
         RegistrationEvent registrationEvent = modelMapper.map(registrationEventDto, RegistrationEvent.class);
+        System.out.println(registrationEventDto.getRegistrationGroupDtos().get(0).getTrack());
         return modelMapper.map(registrationEventRepository.save(registrationEvent), RegistrationEventDto.class);
     }
 

@@ -4,18 +4,21 @@ import ch.qos.logback.classic.pattern.LineOfCallerConverter;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 @Entity
 @Data
 public class RegistrationEvent {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "registrationEvent")
+
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    @ManyToMany(mappedBy = "registrationEvents", cascade = CascadeType.PERSIST)
     private List<RegistrationGroup> registrationGroups;
 
 }

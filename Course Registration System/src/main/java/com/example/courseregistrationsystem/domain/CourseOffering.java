@@ -9,14 +9,14 @@ import java.util.List;
 @Data
 public class CourseOffering {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
     @OneToOne
     private Faculty faculty;
     @OneToOne
     private AcademicBlock academicBlock;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<Course> courses;
     @OneToOne
     private Registration registrations;

@@ -8,12 +8,12 @@ import java.util.List;
 @Data
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
     private String courseName;
     private String description;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<Course> preRequisites;
 
 

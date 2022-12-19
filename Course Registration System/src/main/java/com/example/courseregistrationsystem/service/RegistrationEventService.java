@@ -1,6 +1,6 @@
 package com.example.courseregistrationsystem.service;
 
-import com.example.courseregistrationsystem.domain.dto.RegistrationEventDto;
+import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 
 import java.util.List;
 

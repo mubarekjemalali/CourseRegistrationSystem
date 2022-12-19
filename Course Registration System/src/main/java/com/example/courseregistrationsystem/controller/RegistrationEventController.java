@@ -1,7 +1,6 @@
 package com.example.courseregistrationsystem.controller;
 
-import com.example.courseregistrationsystem.domain.RegistrationEvent;
-import com.example.courseregistrationsystem.domain.dto.RegistrationEventDto;
+import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 import com.example.courseregistrationsystem.service.RegistrationEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,21 +9,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/registration-events")
 public class RegistrationEventController {
     @Autowired
     private RegistrationEventService registrationEventService;
 
     // add registration event
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<RegistrationEventDto> createRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
+        System.out.println("registration event called");
         return ResponseEntity.ok().body(registrationEventService.createRegistrationEvent(registrationEventDto));
     }
-    // get all registration events
+    //     get all registration events
     @GetMapping
     public ResponseEntity<List<RegistrationEventDto>> getAllRegistrationEvents() {
 //        return ResponseEntity.ok().body(registrationEventService.getAllRegistrationEvents());
         return null;
-
     }
 
     // update registration event
@@ -37,6 +37,12 @@ public class RegistrationEventController {
     @DeleteMapping
     public ResponseEntity<String> deleteRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
         return ResponseEntity.ok().body("Registration event deleted successfully");
+    }
+
+    // get registration event by id
+    @GetMapping("/latest")
+    public ResponseEntity<String> getRegistrationEventById() {
+        return ResponseEntity.ok().body("get the registration event latest");
     }
 
 }

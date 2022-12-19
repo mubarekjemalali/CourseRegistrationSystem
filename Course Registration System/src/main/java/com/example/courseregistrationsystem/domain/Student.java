@@ -10,20 +10,23 @@ import java.util.List;
 @Data
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
 
-    @OneToOne
+   @OneToOne(cascade = CascadeType.PERSIST, optional = true)
     private Address mailingAddress;
-    @OneToOne
-    private Address HomeAddress;
-    @OneToMany
+
+  @OneToOne(cascade = CascadeType.PERSIST, optional = true)
+
+  private Address HomeAddress;
+
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<RegistrationRequest> registrationRequests;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Registration> registrations;
 
     @ManyToOne

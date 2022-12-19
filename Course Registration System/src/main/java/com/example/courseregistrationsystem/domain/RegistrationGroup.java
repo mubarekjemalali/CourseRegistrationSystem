@@ -8,16 +8,18 @@ import java.util.List;
 @Data
 public class RegistrationGroup {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String track;
     private String semester;
     private String year;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST})
     private List<Student> students;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<AcademicBlock> academicBlocks;
-    @ManyToOne
-    private RegistrationEvent registrationEvent;
+
+    //TODO: stop the infinite loop
+    @ManyToMany
+    private List<RegistrationEvent> registrationEvents;
 }
