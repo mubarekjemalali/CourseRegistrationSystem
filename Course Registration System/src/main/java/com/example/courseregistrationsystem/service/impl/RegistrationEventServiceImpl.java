@@ -1,9 +1,6 @@
 package com.example.courseregistrationsystem.service.impl;
 
-import com.example.courseregistrationsystem.domain.Registration;
-import com.example.courseregistrationsystem.domain.RegistrationEvent;
-import com.example.courseregistrationsystem.domain.RegistrationRequest;
-import com.example.courseregistrationsystem.domain.Student;
+import com.example.courseregistrationsystem.domain.*;
 import com.example.courseregistrationsystem.repo.RegistrationRepository;
 import com.example.courseregistrationsystem.repo.StudentRepository;
 import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
@@ -65,9 +62,24 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
 
     @Transactional
     public void process(int id) {
+
+        // mubarek's suggestion
+        // get the registration event
+        RegistrationEvent registrationEvent = registrationEventRepository.findById(1l).get();
+
+        // two registration groups in each registration event
+        List<RegistrationGroup> registrationGroups = registrationEvent.getRegistrationGroups();
+
+        // each registration group has a list of students
+
+
         List<Student> students =
                 studentRepository
-                        .findAllByRegistrationGroupRegistrationEvent_IdOrderByRegistrationRequestsAsc(id);
+                        .findAllByRegistrationGroup_RegistrationEvents_Id(id);
+
+        students.stream().forEach(s -> System.out.println(s.getFirstName()));
+
+
 
         for (Student student : students) {
             for (RegistrationRequest registrationRequest : student.getRegistrationRequests()) {
@@ -101,6 +113,7 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
                                 .build();
 
                         registrationRepository.save(newRegistration);
+                        registrationRequest.getCourseOffering().getRegistrations().add(newRegistration);
                     }
                 }
             }

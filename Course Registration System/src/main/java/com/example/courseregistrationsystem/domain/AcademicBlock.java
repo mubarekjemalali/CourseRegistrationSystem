@@ -22,4 +22,12 @@ public class AcademicBlock {
     @OneToMany
     List<CourseOffering> courseOfferings;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AcademicBlock that = (AcademicBlock) o;
+        return id.equals(that.id) && code.equals(that.code);
+    }
+
 }

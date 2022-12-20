@@ -38,7 +38,7 @@ public class RegistrationEventController {
 
     @PutMapping("/{id}")
     public void processed(@PathVariable int id, @RequestParam(required = false) boolean processed) {
-        if (processed) {
+        if (true) {
             // assign course to students
             registrationEventService.process(id);
         }

@@ -14,7 +14,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Student findByFirstName(String mubarek);
 
-    List<Student> findAllByRegistrationGroupRegistrationEvent_IdOrderByRegistrationRequestsAsc(long eventId);
+    // find student by registration group then registration event
+
+
+    List<Student> findAllByRegistrationGroup_RegistrationEvents_Id(long eventId);
 
 
 }
