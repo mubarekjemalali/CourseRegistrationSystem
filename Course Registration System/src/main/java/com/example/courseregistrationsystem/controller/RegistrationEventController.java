@@ -40,6 +40,7 @@ public class RegistrationEventController {
     public void processed(@PathVariable int id, @RequestParam(required = false) boolean processed) {
         if (processed) {
             // assign course to students
+            registrationEventService.process(id);
         }
     }
 

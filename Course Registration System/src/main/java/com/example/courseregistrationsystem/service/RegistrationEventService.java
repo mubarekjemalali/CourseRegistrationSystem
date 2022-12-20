@@ -13,4 +13,7 @@ public interface RegistrationEventService {
     RegistrationEventDto updateRegistrationEvent(RegistrationEventDto registrationEventDto);
 
     void deleteRegistrationEvent(RegistrationEventDto registrationEventDto);
+
+    void process(int id);
+
 }

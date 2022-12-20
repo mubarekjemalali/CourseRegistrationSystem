@@ -1,11 +1,13 @@
 package com.example.courseregistrationsystem.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 @Entity
 @Data
+@Builder
 public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,5 +17,9 @@ public class Registration {
     private CourseOffering courseOffering;
     @ManyToOne
     private Student student;
+
+    public Registration() {
+
+    }
 
 }
