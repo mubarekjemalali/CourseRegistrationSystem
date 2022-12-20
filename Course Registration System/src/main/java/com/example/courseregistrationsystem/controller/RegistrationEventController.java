@@ -20,9 +20,11 @@ public class RegistrationEventController {
     // add registration events
     @PostMapping("")
     public ResponseEntity<RegistrationEventDto> createRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
-        System.out.println("registration event called");
+        System.out.println("add registration event controller");
+        System.out.println(registrationEventDto);
         return ResponseEntity.ok().body(registrationEventService.createRegistrationEvent(registrationEventDto));
     }
+
     //     get all registration events
     @GetMapping("")
     public ResponseEntity<List<RegistrationEventDto>> getAllRegistrationEvents() {
@@ -36,13 +38,14 @@ public class RegistrationEventController {
         return ResponseEntity.ok().body(registrationEventService.updateRegistrationEvent(registrationEventDto));
     }
 
-    @PutMapping("/{id}")
-    public void processed(@PathVariable int id, @RequestParam(required = false) boolean processed) {
-        if (true) {
-            // assign course to students
-            registrationEventService.process(id);
-        }
-    }
+    // process registration event
+//    @PutMapping("/{id}")
+//    public void processed(@PathVariable int id, @RequestParam(required = false) boolean processed) {
+//        if (true) {
+//            // assign course to students
+//            registrationEventService.process(id);
+//        }
+//    }
 
     // delete registration event
     @DeleteMapping
@@ -50,10 +53,12 @@ public class RegistrationEventController {
         return ResponseEntity.ok().body("Registration event deleted successfully");
     }
 
-    // get registration event by id
-//    @GetMapping("/latest")
-//    public ResponseEntity<RegistrationEventDto> getRegistrationEventById() {
-//        return ResponseEntity.ok().body(registrationEventService.getLatestRegistrationEvent());
-//    }
 
+
+    // add registration group to registration event
+    // pass registration group id and registration event id
+    @PutMapping("/registration_groups/{registration_event_id}/{registration_group_id}")
+    public void addRegistrationGroupToRegistrationEvent(@PathVariable long registration_event_id, @PathVariable long registration_group_id) {
+        registrationEventService.addRegistrationGroupToRegistrationEvent(registration_event_id, registration_group_id);
+    }
 }

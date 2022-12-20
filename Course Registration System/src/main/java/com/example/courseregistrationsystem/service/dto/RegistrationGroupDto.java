@@ -18,10 +18,7 @@ public class RegistrationGroupDto {
     private String semester;
     private String year;
 
-    @JsonManagedReference
     private List<StudentDto> student;
-
     private List<AcademicBlockDto> academicBlocks;
 
-    private List<RegistrationEventDto> registrationEvents_;
 }

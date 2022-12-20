@@ -14,7 +14,6 @@ import java.util.List;
 public class RegistrationRequestDto {
 
     private Long id;
-    @JsonBackReference
     private CourseOfferingDto courseOffering;
 
 }

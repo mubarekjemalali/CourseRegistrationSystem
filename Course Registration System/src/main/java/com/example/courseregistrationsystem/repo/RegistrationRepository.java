@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface RegistrationRepository extends JpaRepository<Registration, Long> {
 
-    List<Registration> findAllByStudent_Id(long studentId);
+//    List<Registration> findAllByStudent_Id(long studentId);
 
 }
 

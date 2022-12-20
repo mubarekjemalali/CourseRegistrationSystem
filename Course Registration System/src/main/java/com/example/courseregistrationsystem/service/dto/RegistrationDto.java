@@ -15,10 +15,8 @@ public class RegistrationDto {
 
     private Long id;
 
-    @JsonBackReference
     private CourseOfferingDto courseOffering;
-    @JsonBackReference
-    private Student student;
+
 
 
 }

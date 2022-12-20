@@ -17,6 +17,7 @@ public interface RegistrationEventService {
 
     RegistrationEventDto getLatestRegistrationEvent();
 
-    void process(int id);
+//    void process(int id);
 
+    void addRegistrationGroupToRegistrationEvent(long registration_event_id, long registration_group_id);
 }

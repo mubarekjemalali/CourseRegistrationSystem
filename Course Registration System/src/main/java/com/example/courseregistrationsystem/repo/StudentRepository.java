@@ -17,7 +17,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // find student by registration group then registration event
 
 
-    List<Student> findAllByRegistrationGroup_RegistrationEvents_Id(long eventId);
+//    List<Student> findAllByRegistrationGroup_RegistrationEvents_Id(long eventId);
 
 
 }

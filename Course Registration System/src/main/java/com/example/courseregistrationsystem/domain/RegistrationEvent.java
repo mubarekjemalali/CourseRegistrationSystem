@@ -21,7 +21,7 @@ public class RegistrationEvent {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToMany(mappedBy = "registrationEvents", cascade = CascadeType.PERSIST)
+    @ManyToMany( cascade = CascadeType.PERSIST)
     private List<RegistrationGroup> registrationGroups;
 
 }

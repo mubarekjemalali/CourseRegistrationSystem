@@ -1,5 +1,6 @@
 package com.example.courseregistrationsystem.domain;
 
+import com.example.courseregistrationsystem.service.dto.CourseOfferingDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,7 @@ public class AcademicBlock {
     private String semester;
     private LocalDate startDate;
     private LocalDate endDate;
-    @OneToMany
-    List<CourseOffering> courseOfferings;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AcademicBlock that = (AcademicBlock) o;
-        return id.equals(that.id) && code.equals(that.code);
-    }
+
 
 }

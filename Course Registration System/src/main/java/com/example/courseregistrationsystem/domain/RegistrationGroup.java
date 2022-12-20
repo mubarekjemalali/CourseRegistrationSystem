@@ -18,14 +18,13 @@ public class RegistrationGroup {
     private String semester;
     private String year;
 
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "registrationGroup")
-
+    @OneToMany(cascade = {CascadeType.PERSIST})
     private List<Student> students;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<AcademicBlock> academicBlocks;
 
     //TODO: stop the infinite loop
-    @ManyToMany
-    private List<RegistrationEvent> registrationEvents;
+//    @ManyToMany
+//    private List<RegistrationEvent> registrationEvents;
 }

@@ -21,12 +21,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private ModelMapper mapper;
 
-    @Override
-    public List<RegistrationDto> findAllByStudent_Id(long studentId) {
-        return registrationRepository.findAllByStudent_Id(studentId)
-                .stream()
-                .map(registration -> mapper.map(registration, RegistrationDto.class))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<RegistrationDto> findAllByStudent_Id(long studentId) {
+//        return registrationRepository.findAllByStudent_Id(studentId)
+//                .stream()
+//                .map(registration -> mapper.map(registration, RegistrationDto.class))
+//                .collect(Collectors.toList());
+//    }
 
 }

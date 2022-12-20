@@ -17,8 +17,9 @@ public class RegistrationRequest {
 
     // priority number 1 - n, n is the number of courses in the academic block
     private int priorityNumber;
-    @ManyToOne
-    private CourseOffering courseOffering;
 
+    // a registration request only has one course offering
+    @OneToOne
+    private CourseOffering courseOffering;
 
 }

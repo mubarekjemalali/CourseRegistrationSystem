@@ -20,12 +20,12 @@ public class StudentRegistrationEventController {
     @Autowired
     ModelMapper modelMapper;
 
-   @GetMapping("/latest")
-    public RegistrationEventDto getLatestRegistrationEvent() {
-       // TODO: get the student from the user object
-       System.out.println("latest called");
-        return studentService.getRegistrationEvent();
-
-    }
+//   @GetMapping("/latest")
+//    public RegistrationEventDto getLatestRegistrationEvent() {
+//       // TODO: get the student from the user object
+//       System.out.println("latest called");
+//        return studentService.getRegistrationEvent();
+//
+//    }
 
 }

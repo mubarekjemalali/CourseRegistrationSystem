@@ -26,8 +26,10 @@ public class StudentController {
     }
 
     // add student
-    @PostMapping("")
-    public ResponseEntity<StudentDto> addStudent(StudentDto studentDto) {
+    @PostMapping("/")
+    public ResponseEntity<StudentDto> addStudent(@RequestBody StudentDto studentDto) {
+        System.out.println("add student controller");
+        System.out.println(studentDto);
         return ResponseEntity.ok().body(studentService.addStudent(studentDto));
     }
     // update student
@@ -37,7 +39,7 @@ public class StudentController {
     }
     // delete student
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable int id) {
-        return ResponseEntity.ok().body("Student deleted successfully");
+    public ResponseEntity<String> deleteStudent(@PathVariable long id) {
+        return ResponseEntity.ok().body(studentService.deleteStudent(id));
     }
 }

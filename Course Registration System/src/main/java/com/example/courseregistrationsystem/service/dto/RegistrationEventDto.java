@@ -17,7 +17,6 @@ public class RegistrationEventDto {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    @JsonManagedReference
-    private List<RegistrationGroupDto> registrationGroups_;
+    private List<RegistrationGroupDto> registrationGroups;
 
 }

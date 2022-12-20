@@ -21,20 +21,26 @@ public class CourseOffering {
     private int availableSeats;
 
     @ManyToOne
-    @JoinColumn
     private Faculty faculty;
+
     @ManyToOne
     private AcademicBlock academicBlock;
+
     @OneToOne
     private Course course;
 
     // has list of students who is registered for this course
-    @OneToMany
-    private List<Registration> registrations;
+//    @OneToMany
+//    private List<Registration> registrations;
 
     // has list of students who requested to register for this course
-    @OneToMany
-    private List<RegistrationRequest> registrationRequests;
+//    @OneToMany
+//    private List<RegistrationRequest> registrationRequests;
+
+    // to remove the bidirectional relationship
+    // we can get the list of students who requested to register for this course
+    // from student.registrationRequests by passing the courseOfferingId
+
 
     @Override
     public boolean equals(Object o) {

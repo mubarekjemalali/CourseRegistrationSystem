@@ -1,13 +1,14 @@
 package com.example.courseregistrationsystem.domain;
 
+import com.example.courseregistrationsystem.service.dto.AddressDto;
+import com.example.courseregistrationsystem.service.dto.RegistrationDto;
+import com.example.courseregistrationsystem.service.dto.RegistrationGroupDto;
+import com.example.courseregistrationsystem.service.dto.RegistrationRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,18 +28,17 @@ public class Student {
     private Address mailingAddress;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Address HomeAddress;
+    private Address homeAddress;
 
     @OneToMany(cascade = {CascadeType.ALL})
-
     private List<RegistrationRequest> registrationRequests;
 
     @OneToMany(cascade = {CascadeType.ALL})
-    @JsonBackReference
     private List<Registration> registrations;
 
-    @ManyToOne
-//    @JsonManagedReference
-    private RegistrationGroup registrationGroup;
+
+//
+//    @ManyToOne
+//    private RegistrationGroup registrationGroup;
 
 }

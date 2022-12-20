@@ -1,15 +1,13 @@
 package com.example.courseregistrationsystem.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 
 public class Registration {
@@ -17,13 +15,12 @@ public class Registration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    // a registration has only one course offering
+    @OneToOne
     private CourseOffering courseOffering;
-    @ManyToOne
-    private Student student;
 
-    public Registration() {
-
-    }
+//    public Registration() {
+//
+//    }
 
 }

@@ -22,9 +22,6 @@ public class StudentDto {
     private AddressDto mailingAddress;
     private AddressDto homeAddress;
     private List<RegistrationRequestDto> registrationRequests;
-    @JsonManagedReference
     private List<RegistrationDto> registrations;
-    @JsonBackReference
-    private RegistrationGroupDto registrationGroup;
 
 }

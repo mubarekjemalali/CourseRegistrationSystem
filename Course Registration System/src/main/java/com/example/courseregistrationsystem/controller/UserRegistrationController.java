@@ -16,9 +16,9 @@ public class UserRegistrationController {
     @Autowired
     private RegistrationService registrationService;
 
-    @GetMapping("/students/{id}/registrations")
-    public List<RegistrationDto> findAllByStudent_id(@PathVariable long id) {
-        return registrationService.findAllByStudent_Id(id);
-    }
+//    @GetMapping("/students/{id}/registrations")
+//    public List<RegistrationDto> findAllByStudent_id(@PathVariable long id) {
+//        return registrationService.findAllByStudent_Id(id);
+//    }
 
 }

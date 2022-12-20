@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface RegistrationService {
 
-    List<RegistrationDto> findAllByStudent_Id(long studentId);
+//    List<RegistrationDto> findAllByStudent_Id(long studentId);
 
 }

@@ -6,7 +6,7 @@ import com.example.courseregistrationsystem.service.dto.StudentDto;
 import java.util.List;
 
 public interface StudentService {
-    RegistrationEventDto getRegistrationEvent();
+//    RegistrationEventDto getRegistrationEvent();
 
     List<StudentDto> getAllStudents();
 
@@ -15,6 +15,8 @@ public interface StudentService {
     StudentDto getStudentById(int id);
 
     StudentDto updateStudent(int id, StudentDto studentDto);
+
+    String deleteStudent(long id);
 
 //    StudentDto addStudent(StudentDto studentDto);
 }

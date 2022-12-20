@@ -21,10 +21,5 @@ public class AcademicBlockDto {
     private String semester;
     private LocalDate startDate;
     private LocalDate endDate;
-    @JsonManagedReference
-    List<CourseOfferingDto> courseOffering;
-
-
-
 
 }
