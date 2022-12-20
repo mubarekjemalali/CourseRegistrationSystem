@@ -14,5 +14,9 @@ public interface RegistrationEventService {
 
     void deleteRegistrationEvent(RegistrationEventDto registrationEventDto);
 
+
     RegistrationEventDto getLatestRegistrationEvent();
+
+    void process(int id);
+
 }

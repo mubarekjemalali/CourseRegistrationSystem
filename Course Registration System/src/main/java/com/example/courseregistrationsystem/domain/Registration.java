@@ -1,5 +1,7 @@
 package com.example.courseregistrationsystem.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +9,8 @@ import javax.persistence.*;
 import java.util.List;
 @Entity
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 
 public class Registration {
     @Id
@@ -18,5 +21,9 @@ public class Registration {
     private CourseOffering courseOffering;
     @ManyToOne
     private Student student;
+
+    public Registration() {
+
+    }
 
 }

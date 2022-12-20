@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -34,4 +35,17 @@ public class CourseOffering {
     // has list of students who requested to register for this course
     @OneToMany
     private List<RegistrationRequest> registrationRequests;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CourseOffering that = (CourseOffering) o;
+        return id.equals(that.id) && code.equals(that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code);
+    }
 }
