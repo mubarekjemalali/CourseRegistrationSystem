@@ -21,7 +21,7 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
     public RegistrationEventDto createRegistrationEvent(RegistrationEventDto registrationEventDto) {
         System.out.println("---------service");
         RegistrationEvent registrationEvent = modelMapper.map(registrationEventDto, RegistrationEvent.class);
-        System.out.println(registrationEventDto.getRegistrationGroupDtos().get(0).getTrack());
+        System.out.println(registrationEventDto.getRegistrationGroups_().get(0).getTrack());
         return modelMapper.map(registrationEventRepository.save(registrationEvent), RegistrationEventDto.class);
     }
 
@@ -43,5 +43,10 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
     @Override
     public void deleteRegistrationEvent(RegistrationEventDto registrationEventDto) {
         registrationEventRepository.delete(modelMapper.map(registrationEventDto, RegistrationEvent.class));
+    }
+
+    @Override
+    public RegistrationEventDto getLatestRegistrationEvent() {
+        return null;
     }
 }

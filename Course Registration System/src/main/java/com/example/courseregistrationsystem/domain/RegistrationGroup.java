@@ -1,11 +1,15 @@
 package com.example.courseregistrationsystem.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 @Entity
 @Data
+@RequiredArgsConstructor
 public class RegistrationGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,9 +18,11 @@ public class RegistrationGroup {
     private String semester;
     private String year;
 
-    @OneToMany(cascade = {CascadeType.PERSIST})
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "registrationGroup")
+
     private List<Student> students;
-    @OneToMany(cascade = CascadeType.PERSIST)
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<AcademicBlock> academicBlocks;
 
     //TODO: stop the infinite loop

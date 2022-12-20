@@ -11,23 +11,23 @@ import java.util.List;
 
 
 
-@RestController("/api/v1/registration-events/")
-
+@RestController
+@RequestMapping("/api/v1/registration-events")
 public class RegistrationEventController {
     @Autowired
     private RegistrationEventService registrationEventService;
 
-    // add registration event
-    @PostMapping("/")
+    // add registration events
+    @PostMapping("")
     public ResponseEntity<RegistrationEventDto> createRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
         System.out.println("registration event called");
         return ResponseEntity.ok().body(registrationEventService.createRegistrationEvent(registrationEventDto));
     }
     //     get all registration events
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<RegistrationEventDto>> getAllRegistrationEvents() {
-//        return ResponseEntity.ok().body(registrationEventService.getAllRegistrationEvents());
-        return null;
+        return ResponseEntity.ok().body(registrationEventService.getAllRegistrationEvents());
+
     }
 
     // update registration event
@@ -50,9 +50,9 @@ public class RegistrationEventController {
     }
 
     // get registration event by id
-    @GetMapping("/latest")
-    public ResponseEntity<String> getRegistrationEventById() {
-        return ResponseEntity.ok().body("get the registration event latest");
-    }
+//    @GetMapping("/latest")
+//    public ResponseEntity<RegistrationEventDto> getRegistrationEventById() {
+//        return ResponseEntity.ok().body(registrationEventService.getLatestRegistrationEvent());
+//    }
 
 }

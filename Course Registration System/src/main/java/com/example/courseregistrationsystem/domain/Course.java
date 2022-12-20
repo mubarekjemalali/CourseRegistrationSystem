@@ -1,11 +1,14 @@
 package com.example.courseregistrationsystem.domain;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 @Entity
 @Data
+@RequiredArgsConstructor
+
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
