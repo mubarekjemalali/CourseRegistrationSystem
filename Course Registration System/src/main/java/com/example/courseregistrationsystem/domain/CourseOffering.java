@@ -24,6 +24,7 @@ public class CourseOffering {
     private Faculty faculty;
 
     @ManyToOne
+    @JoinColumn()
     private AcademicBlock academicBlock;
 
     @OneToOne

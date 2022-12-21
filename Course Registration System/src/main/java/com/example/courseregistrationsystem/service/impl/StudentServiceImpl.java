@@ -1,6 +1,7 @@
 package com.example.courseregistrationsystem.service.impl;
 
 import com.example.courseregistrationsystem.domain.RegistrationEvent;
+import com.example.courseregistrationsystem.domain.RegistrationRequest;
 import com.example.courseregistrationsystem.domain.Student;
 import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 import com.example.courseregistrationsystem.repo.StudentRepository;
@@ -61,33 +62,34 @@ public class StudentServiceImpl implements StudentService {
 //
 //    }
 
+    // get all students
     @Override
     public List<StudentDto> getAllStudents() {
         List<Student> students = studentRepository.findAll();
-//        students.stream().forEach(student -> System.out.println(student));
-        Student student1 = students.get(0);
-        StudentDto studentDto = modelMapper.map(student1, StudentDto.class);
-        System.out.println(studentDto);
-        return studentRepository.findAll().stream().map(student -> modelMapper.map(student, StudentDto.class)).collect(Collectors.toList());
+        return studentRepository.findAll()
+                .stream()
+                .map(student -> modelMapper.map(student, StudentDto.class)).collect(Collectors.toList());
 
     }
 
+    // get student by id
+    @Override
+    public StudentDto getStudentById(long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        return modelMapper.map(student, StudentDto.class);
+    }
+
+    // add student
     @Override
     public StudentDto addStudent(StudentDto studentDto) {
-        System.out.println("add stuent service called");
-        System.out.println(studentDto);
+
         Student student = studentRepository.save(modelMapper.map(studentDto, Student.class));
-        System.out.println("service after student is added");
         return  modelMapper.map(student, StudentDto.class);
     }
 
-    @Override
-    public StudentDto getStudentById(int id) {
-        return modelMapper.map(studentRepository.findById(id), StudentDto.class);
-    }
 
     @Override
-    public StudentDto updateStudent(int id, StudentDto studentDto) {
+    public StudentDto updateStudent(long id, StudentDto studentDto) {
         Student student = studentRepository.save(modelMapper.map(studentDto, Student.class));
         return modelMapper.map(student, StudentDto.class);
     }
@@ -98,5 +100,12 @@ public class StudentServiceImpl implements StudentService {
         return "Student with id: " + id + " has been deleted";
     }
 
+    @Override
+    public String addRegistrationRequest(List<RegistrationRequest> registrationRequests, long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        student.setRegistrationRequests(registrationRequests);
+        studentRepository.save(student);
+        return "registration request has been added";
+    }
 
 }

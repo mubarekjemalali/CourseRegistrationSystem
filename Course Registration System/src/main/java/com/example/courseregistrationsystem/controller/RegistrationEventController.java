@@ -20,8 +20,6 @@ public class RegistrationEventController {
     // add registration events
     @PostMapping("")
     public ResponseEntity<RegistrationEventDto> createRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
-        System.out.println("add registration event controller");
-        System.out.println(registrationEventDto);
         return ResponseEntity.ok().body(registrationEventService.createRegistrationEvent(registrationEventDto));
     }
 
@@ -33,9 +31,16 @@ public class RegistrationEventController {
     }
 
     // update registration event
-    @PutMapping
-    public ResponseEntity<RegistrationEventDto> updateRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
-        return ResponseEntity.ok().body(registrationEventService.updateRegistrationEvent(registrationEventDto));
+    @PutMapping("/{id}")
+    public ResponseEntity<RegistrationEventDto> updateRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto, @PathVariable long id) {
+        try {
+            System.out.println("update registration event");
+            return ResponseEntity.ok().body(registrationEventService.updateRegistrationEvent(registrationEventDto, id));
+
+        } catch (Exception e) {
+            System.out.println("update registration event error");
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     // process registration event
@@ -48,9 +53,14 @@ public class RegistrationEventController {
 //    }
 
     // delete registration event
-    @DeleteMapping
-    public ResponseEntity<String> deleteRegistrationEvent(@RequestBody RegistrationEventDto registrationEventDto) {
-        return ResponseEntity.ok().body("Registration event deleted successfully");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteRegistrationEvent(@PathVariable long id) {
+        try {
+            registrationEventService.deleteRegistrationEvent(id);
+            return ResponseEntity.ok().body("Registration Event deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration Event not deleted, event id is not correct");
+        }
     }
 
 

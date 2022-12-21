@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RegistrationEventRepository extends JpaRepository<RegistrationEvent, Long> {
 
-    @Query("SELECT re FROM RegistrationEvent re JOIN re.registrationGroups rg JOIN rg.students s WHERE s.id = ?1 ORDER BY re.startDate DESC")
-    public RegistrationEvent findAllByStudentId(Long studentId);
+//    @Query("SELECT re FROM RegistrationEvent re JOIN re.registrationGroups rg JOIN rg.students s WHERE s.id = ?1 ORDER BY re.startDate DESC")
+//    public RegistrationEvent findAllByStudentId(Long studentId);
 
 }

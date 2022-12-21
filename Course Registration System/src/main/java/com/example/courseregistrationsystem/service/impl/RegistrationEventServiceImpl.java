@@ -30,15 +30,17 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
     @Autowired
     ModelMapper modelMapper;
 
+
+    // add registration events
     @Override
     public RegistrationEventDto createRegistrationEvent(RegistrationEventDto registrationEventDto) {
-//        System.out.println("---------service");
-//        RegistrationEvent registrationEvent = modelMapper.map(registrationEventDto, RegistrationEvent.class);
-//        System.out.println(registrationEventDto.getRegistrationGroups_().get(0).getTrack());
-//        return modelMapper.map(registrationEventRepository.save(registrationEvent), RegistrationEventDto.class);
-        return registrationEventDto;
+
+        RegistrationEvent registrationEvent = registrationEventRepository.save(modelMapper.map(registrationEventDto, RegistrationEvent.class));
+        return modelMapper.map(registrationEvent, RegistrationEventDto.class);
     }
 
+
+    //     get all registration events
     @Override
     public List<RegistrationEventDto> getAllRegistrationEvents() {
         List<RegistrationEvent> registrationEvents = registrationEventRepository.findAll();
@@ -48,15 +50,28 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
 
     }
 
+
+    // update registration event
     @Override
-    public RegistrationEventDto updateRegistrationEvent(RegistrationEventDto registrationEventDto) {
-        RegistrationEvent registrationEvent = registrationEventRepository.save(modelMapper.map(registrationEventDto, RegistrationEvent.class));
-        return modelMapper.map(registrationEvent, RegistrationEventDto.class);
+    public RegistrationEventDto updateRegistrationEvent(RegistrationEventDto registrationEventDto, long id) {
+        System.out.println("update registration event service --------");
+        RegistrationEvent registrationEvent = registrationEventRepository.findById(id).orElseThrow(() -> new RuntimeException("Registration event not found"));
+        // update registration event and save
+        registrationEvent.setStartDate(registrationEventDto.getStartDate());
+        registrationEvent.setEndDate(registrationEventDto.getEndDate());
+        List<RegistrationGroup> registrationGroup = registrationEventDto.getRegistrationGroups()
+                .stream()
+                .map(registrationGroupDto -> modelMapper.map(registrationGroupDto, RegistrationGroup.class)).toList();
+        System.out.println(registrationEvent.getStartDate() + "---------------------");
+        registrationEvent.setRegistrationGroups(registrationGroup);
+        return modelMapper.map(registrationEventRepository.save(registrationEvent), RegistrationEventDto.class);
+
     }
 
     @Override
-    public void deleteRegistrationEvent(RegistrationEventDto registrationEventDto) {
-        registrationEventRepository.delete(modelMapper.map(registrationEventDto, RegistrationEvent.class));
+    public void deleteRegistrationEvent(long id) {
+        registrationEventRepository.deleteById(id);
+
     }
 
     @Override

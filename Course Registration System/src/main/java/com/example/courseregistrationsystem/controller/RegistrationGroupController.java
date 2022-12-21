@@ -4,6 +4,7 @@ import com.example.courseregistrationsystem.service.RegistrationGroupService;
 import com.example.courseregistrationsystem.service.dto.RegistrationGroupDto;
 import com.example.courseregistrationsystem.service.dto.StudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,10 @@ public class RegistrationGroupController {
     @Autowired
     private RegistrationGroupService registrationGroupService;
 
+    @Autowired
+    private StudentClient studentClient;
+
+
     // create registration group
     @PostMapping("")
     public ResponseEntity<RegistrationGroupDto> createRegistrationGroup(@RequestBody RegistrationGroupDto registrationGroupDto) {
@@ -23,19 +28,51 @@ public class RegistrationGroupController {
 
     // get registration group by id
     @GetMapping("/{id}")
-    public void getRegistrationGroup(@RequestParam long id) {
-        registrationGroupService.getRegistrationGroup(id);
+    public ResponseEntity<RegistrationGroupDto> getRegistrationGroup(@PathVariable long id) {
+
+        try {
+            return ResponseEntity.ok().body(registrationGroupService.getRegistrationGroup(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.notFound().build();
+
+        }
     }
+
 
     // delete registration group
     @PostMapping("/{id}")
-    public void deleteRegistrationGroup(@RequestParam long id) {
-        registrationGroupService.deleteRegistrationGroup(id);
+    public ResponseEntity<String> deleteRegistrationGroup( @PathVariable long id) {
+        try {
+            return ResponseEntity.ok().body(registrationGroupService.deleteRegistrationGroup(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration Group not found");
+        }
+
     }
 
+
     // add list of students to registration group
+    // get list of students using feign client
     @PutMapping("/{id}")
-    public void addStudentsToRegistrationGroup(@RequestParam long id, @RequestBody List<StudentDto> studentDtos) {
-        registrationGroupService.addStudentsToRegistrationGroup(id, studentDtos);
+    public ResponseEntity<String> addStudentsToRegistrationGroup(@PathVariable long id) {
+        // call student controller to get list of students
+        List<StudentDto> studentDtos = studentClient.getStudent();
+        try {
+            registrationGroupService.addStudentsToRegistrationGroup(id, studentDtos);
+            return ResponseEntity.ok().body("Students added to registration group successfully");
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration Group not found");
+        }
     }
+
+    @FeignClient(name="courseRegistrationSystem", url = "http://localhost:8080")
+    interface StudentClient {
+        @GetMapping("/students")
+        public List<StudentDto> getStudent();
+    }
+
+
 }

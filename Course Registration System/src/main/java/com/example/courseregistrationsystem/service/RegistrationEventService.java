@@ -10,9 +10,9 @@ public interface RegistrationEventService {
 
     List<RegistrationEventDto> getAllRegistrationEvents();
 
-    RegistrationEventDto updateRegistrationEvent(RegistrationEventDto registrationEventDto);
+    RegistrationEventDto updateRegistrationEvent(RegistrationEventDto registrationEventDto, long id);
 
-    void deleteRegistrationEvent(RegistrationEventDto registrationEventDto);
+    void deleteRegistrationEvent(long id);
 
 
     RegistrationEventDto getLatestRegistrationEvent();

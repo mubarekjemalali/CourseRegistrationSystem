@@ -27,24 +27,30 @@ public class RegistrationGroupServiceImpl implements RegistrationGroupService {
         return mapper.map(registrationGroup, RegistrationGroupDto.class);
     }
 
+    // get registration group by id
     @Override
     public RegistrationGroupDto getRegistrationGroup(long id) {
-        return mapper.map(registrationGroupRepository.findById(id).get(), RegistrationGroupDto.class);
+        RegistrationGroup registrationGroup = registrationGroupRepository.findById(id).orElseThrow(() -> new RuntimeException("Registration group not found"));
+        return mapper.map(registrationGroup, RegistrationGroupDto.class);
     }
 
+    // delete registration group by id
     @Override
     public String deleteRegistrationGroup(long id) {
+
         registrationGroupRepository.deleteById(id);
         return "Registration group deleted";
     }
 
+    // add list of students to registration group
     @Override
     public void addStudentsToRegistrationGroup(long id, List<StudentDto> studentDtos) {
+        // get the registration group
         RegistrationGroup registrationGroup = registrationGroupRepository.findById(id).orElse(null);
         if(registrationGroup != null) {
-            registrationGroup.getStudents().addAll(studentDtos.stream().map(studentDto -> mapper.map(studentDto, Student.class)).toList());
+            List<Student> students = studentDtos.stream().map(studentDto -> mapper.map(studentDto, Student.class)).toList();
+            registrationGroup.setStudents(students);
             registrationGroupRepository.save(registrationGroup);
         }
-
     }
 }

@@ -1,5 +1,6 @@
 package com.example.courseregistrationsystem.service;
 
+import com.example.courseregistrationsystem.domain.RegistrationRequest;
 import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 import com.example.courseregistrationsystem.service.dto.StudentDto;
 
@@ -12,11 +13,13 @@ public interface StudentService {
 
     StudentDto addStudent(StudentDto studentDto);
 
-    StudentDto getStudentById(int id);
+    StudentDto getStudentById(long id);
 
-    StudentDto updateStudent(int id, StudentDto studentDto);
+    StudentDto updateStudent(long id, StudentDto studentDto);
 
     String deleteStudent(long id);
+
+    String addRegistrationRequest(List<RegistrationRequest> registrationRequests, long id);
 
 //    StudentDto addStudent(StudentDto studentDto);
 }

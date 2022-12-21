@@ -5,9 +5,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableFeignClients
+@EnableDiscoveryClient
 public class CourseRegistrationSystemApplication  {
 
     @Bean
@@ -19,9 +24,5 @@ public class CourseRegistrationSystemApplication  {
         SpringApplication.run(CourseRegistrationSystemApplication.class, args);
     }
 
-//    @Override
-//    public void run(String... args) throws Exception {
-//        Address address = new Address("1000 N 4th st","Fairfield" , "IA",  "10001","USA");
-//
-//    }
+
 }

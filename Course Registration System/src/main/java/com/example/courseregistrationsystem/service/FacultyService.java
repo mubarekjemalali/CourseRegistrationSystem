@@ -3,6 +3,7 @@ package com.example.courseregistrationsystem.service;
 import com.example.courseregistrationsystem.service.dto.FacultyDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FacultyService {
     FacultyDto addFaculty(FacultyDto facultyDto);
@@ -11,7 +12,8 @@ public interface FacultyService {
 
     List<FacultyDto> getAllFaculties();
 
-    FacultyDto updateFaculty(FacultyDto facultyDto);
 
-    String deleteFaculty(int id);
+    void deleteFaculty(long id);
+
+    Optional<FacultyDto> findById(long facultyId);
 }

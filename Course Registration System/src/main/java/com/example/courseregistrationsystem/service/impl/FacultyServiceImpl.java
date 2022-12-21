@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,23 +30,27 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public FacultyDto getFacultyById(long id) {
-        return mapper.map(facultyRepository.findById(id).get(), FacultyDto.class);
+        Faculty faculty = facultyRepository.findById(id).orElseThrow(() -> new RuntimeException("Faculty not found"));
+        return mapper.map(faculty, FacultyDto.class);
     }
 
     @Override
     public List<FacultyDto> getAllFaculties() {
         List<Faculty> faculties = facultyRepository.findAll();
-        return faculties.stream().map(faculty -> mapper.map(faculty, FacultyDto.class)).collect(Collectors.toList());
+        return faculties.stream()
+                .map(faculty -> mapper.map(faculty, FacultyDto.class)).collect(Collectors.toList());
 
     }
 
+
     @Override
-    public FacultyDto updateFaculty(FacultyDto facultyDto) {
-        return null;
+    public void deleteFaculty(long id) {
+        facultyRepository.deleteById(id);
     }
 
     @Override
-    public String deleteFaculty(int id) {
-        return null;
+    public Optional<FacultyDto> findById(long facultyId) {
+        Faculty faculty = facultyRepository.findById(facultyId).orElse(null);
+        return Optional.ofNullable(mapper.map(faculty, FacultyDto.class));
     }
 }
