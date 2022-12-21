@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegistrationRequestServiceImpl implements RegistrationRequestService {
 
-    @Autowired
-    private StudentService studentService;
+//    @Autowired
+//    private StudentService studentService;
 
     @Autowired
     private RegistrationRequestRepository registrationRequestRepository;
@@ -24,13 +24,18 @@ public class RegistrationRequestServiceImpl implements RegistrationRequestServic
     private ModelMapper mapper;
 
     @Override
-    public void save(RegistrationRequestDto registrationRequestDto) {
-        // get student by id
-        // update the registration request and save the student
-        StudentDto studentDto = studentService.getStudentById(1);
-        studentDto.getRegistrationRequests().add(registrationRequestDto);
-
-        registrationRequestRepository.save(mapper.map(registrationRequestDto, RegistrationRequest.class));
+    public RegistrationRequestDto createRegistrationRequest(RegistrationRequest registrationRequest) {
+        return mapper.map(registrationRequestRepository.save(registrationRequest), RegistrationRequestDto.class);
     }
+
+//    @Override
+//    public void save(RegistrationRequestDto registrationRequestDto) {
+//        // get student by id
+//        // update the registration request and save the student
+//        StudentDto studentDto = studentService.getStudentById(1);
+//        studentDto.getRegistrationRequests().add(registrationRequestDto);
+//
+//        registrationRequestRepository.save(mapper.map(registrationRequestDto, RegistrationRequest.class));
+//    }
 
 }

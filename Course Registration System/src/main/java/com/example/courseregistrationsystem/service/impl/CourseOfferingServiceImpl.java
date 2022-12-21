@@ -44,4 +44,10 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
 
         return mapper.map(courseOfferingRepository.save(courseOffering), CourseOfferingDto.class);
     }
+
+    @Override
+    public CourseOfferingDto getCourseOffering(long id) {
+        CourseOffering courseOffering = courseOfferingRepository.findById(id).orElseThrow(() -> new RuntimeException("Course offering not found"));
+        return mapper.map(courseOffering, CourseOfferingDto.class);
+    }
 }

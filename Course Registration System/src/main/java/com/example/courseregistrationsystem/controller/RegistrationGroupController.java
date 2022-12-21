@@ -58,7 +58,7 @@ public class RegistrationGroupController {
     @PutMapping("/{id}")
     public ResponseEntity<String> addStudentsToRegistrationGroup(@PathVariable long id) {
         // call student controller to get list of students
-        List<StudentDto> studentDtos = studentClient.getStudent();
+        List<StudentDto> studentDtos = studentClient.getStudents();
         try {
             registrationGroupService.addStudentsToRegistrationGroup(id, studentDtos);
             return ResponseEntity.ok().body("Students added to registration group successfully");
@@ -67,12 +67,5 @@ public class RegistrationGroupController {
             return ResponseEntity.badRequest().body("Registration Group not found");
         }
     }
-
-    @FeignClient(name="courseRegistrationSystem", url = "http://localhost:8080")
-    interface StudentClient {
-        @GetMapping("/students")
-        public List<StudentDto> getStudent();
-    }
-
 
 }

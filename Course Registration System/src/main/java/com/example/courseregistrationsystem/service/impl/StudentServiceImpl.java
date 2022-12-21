@@ -1,17 +1,17 @@
 package com.example.courseregistrationsystem.service.impl;
 
-import com.example.courseregistrationsystem.domain.RegistrationEvent;
+import com.example.courseregistrationsystem.domain.CourseOffering;
 import com.example.courseregistrationsystem.domain.RegistrationRequest;
 import com.example.courseregistrationsystem.domain.Student;
-import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
+import com.example.courseregistrationsystem.service.RegistrationEventService;
+import com.example.courseregistrationsystem.service.RegistrationRequestService;
+import com.example.courseregistrationsystem.service.dto.*;
 import com.example.courseregistrationsystem.repo.StudentRepository;
 import com.example.courseregistrationsystem.service.StudentService;
-import com.example.courseregistrationsystem.service.dto.StudentDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,46 +21,19 @@ public class StudentServiceImpl implements StudentService {
     private ModelMapper modelMapper;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private RegistrationRequestService registrationRequestService;
+    @Autowired
+    private RegistrationEventService registrationEventService;
 //    @Override
-//    public RegistrationEventDto getRegistrationEvent() {
-//
-//        // TODO: we need to pass the student id
-//
-////        Student student = studentRepository.findById(1l);
-//        Student student = studentRepository.findByFirstName("Mubarek");
-//        System.out.println(student.getFirstName());
-//
-//        System.out.println(student.getRegistrationGroup().getRegistrationEvents().size());
-//
-//        // get the registration event from the student and get the registration events
-//        List<RegistrationEvent> registrationEventList = student.getRegistrationGroup().getRegistrationEvents();
-//
-//        // each student has two registration events
-//        // the first for (FPP and MPP) and the second for the rest of the courses
-//        // if the student is Mpp track then the first registration event is for MPP only
-//
-//        // get the latest event by comparing the dates
-//        LocalDate latestDate = LocalDate.now();
-//
-//        // compare the latest date with the start date of the registration event
-//        // then return the registration event that is closer to the current date
-//        // Create a localdate form string
-//        //LocalDate localDate = LocalDate.parse(registrationEventList.get(0).getEndDate());
-//
-//
-//        var differenceToFirstEvent = latestDate.compareTo(registrationEventList.get(0).getEndDate());
-//        var differenceToSecondEvent = latestDate.compareTo(registrationEventList.get(1).getEndDate());
-//
-//        // compare it to end date of the first event,
-////        var differenceToFirstEvent = latestDate.compareTo(LocalDate.parse(registrationEventList.get(0).getEndDate()));
-////        var differenceToSecondEvent = latestDate.compareTo(LocalDate.parse(registrationEventList.get(1).getEndDate()));
-//        // compare the difference between the two events
-//        var registrationEvent = differenceToFirstEvent > differenceToSecondEvent ? registrationEventList.get(1) : registrationEventList.get(0);
-//
-//        return modelMapper.map(registrationEvent, RegistrationEventDto.class);
-////        return "method is working";
-//
-//    }
+    public RegistrationEventWOStudentList getRegistrationEvent(long id) {
+
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+
+        // get all events and get the event the student belongs to
+          return registrationEventService.findLatestByStudentId(id);
+
+    }
 
     // get all students
     @Override
@@ -101,11 +74,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String addRegistrationRequest(List<RegistrationRequest> registrationRequests, long id) {
+    public String addRegistrationRequests(List<RegistrationRequest> registrationRequests, long id) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
         student.setRegistrationRequests(registrationRequests);
         studentRepository.save(student);
         return "registration request has been added";
+    }
+
+    @Override
+    public RegistrationRequestDto addRegistrationRequest(RegistrationRequestDto registrationRequestDto, CourseOfferingDto courseOfferingDto, long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
+        RegistrationRequest registrationRequest = modelMapper.map(registrationRequestDto, RegistrationRequest.class);
+        registrationRequest.setCourseOffering(modelMapper.map(courseOfferingDto, CourseOffering.class));
+        student.getRegistrationRequests().add(modelMapper.map(registrationRequestDto, RegistrationRequest.class));
+        studentRepository.save(student);
+        return registrationRequestService.createRegistrationRequest(registrationRequest);
+    }
+
+    @Override
+    public List<RegistrationRequestDto> getRegistrationRequests(long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        List<RegistrationRequest> registrationRequests = student.getRegistrationRequests();
+        return registrationRequests.stream().map(registrationRequest -> modelMapper.map(registrationRequest, RegistrationRequestDto.class)).collect(Collectors.toList());
     }
 
 }

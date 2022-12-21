@@ -18,7 +18,7 @@ public class RegistrationGroupDto {
     private String semester;
     private String year;
 
-    private List<StudentDto> student;
+//    private List<StudentDto> student;
     private List<AcademicBlockDto> academicBlocks;
 
 }

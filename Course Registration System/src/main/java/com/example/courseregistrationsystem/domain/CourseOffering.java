@@ -30,6 +30,14 @@ public class CourseOffering {
     @OneToOne
     private Course course;
 
+    public CourseOffering(String code, String capacity, String availableSeats) {
+        this.code = code;
+        this.capacity = Integer.parseInt(capacity);
+        this.availableSeats = Integer.parseInt(availableSeats);
+    }
+
+
+
     // has list of students who is registered for this course
 //    @OneToMany
 //    private List<Registration> registrations;

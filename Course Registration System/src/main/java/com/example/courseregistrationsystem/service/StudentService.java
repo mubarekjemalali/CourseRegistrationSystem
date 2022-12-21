@@ -1,13 +1,12 @@
 package com.example.courseregistrationsystem.service;
 
 import com.example.courseregistrationsystem.domain.RegistrationRequest;
-import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
-import com.example.courseregistrationsystem.service.dto.StudentDto;
+import com.example.courseregistrationsystem.service.dto.*;
 
 import java.util.List;
 
 public interface StudentService {
-//    RegistrationEventDto getRegistrationEvent();
+    RegistrationEventWOStudentList getRegistrationEvent(long id);
 
     List<StudentDto> getAllStudents();
 
@@ -19,7 +18,12 @@ public interface StudentService {
 
     String deleteStudent(long id);
 
-    String addRegistrationRequest(List<RegistrationRequest> registrationRequests, long id);
+    String addRegistrationRequests(List<RegistrationRequest> registrationRequests, long id);
+
+    RegistrationRequestDto addRegistrationRequest(RegistrationRequestDto registrationRequestDto, CourseOfferingDto courseOfferingDto, long studentId);
+
+    List<RegistrationRequestDto> getRegistrationRequests(long id);
 
 //    StudentDto addStudent(StudentDto studentDto);
 }
+

@@ -3,17 +3,16 @@ package com.example.courseregistrationsystem.service.impl;
 import com.example.courseregistrationsystem.domain.*;
 import com.example.courseregistrationsystem.repo.RegistrationGroupRepository;
 import com.example.courseregistrationsystem.repo.RegistrationRepository;
-import com.example.courseregistrationsystem.repo.StudentRepository;
 import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 import com.example.courseregistrationsystem.repo.RegistrationEventRepository;
 import com.example.courseregistrationsystem.service.RegistrationEventService;
+import com.example.courseregistrationsystem.service.dto.RegistrationEventWOStudentList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RegistrationEventServiceImpl implements RegistrationEventService {
@@ -150,6 +149,43 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
             registrationEventRepository.save(registrationEvent);
 
         }
+
+    }
+
+    @Override
+    public RegistrationEventWOStudentList findLatestByStudentId(long id) {
+        List<RegistrationEvent> registrationEvents = registrationEventRepository.findAll();
+       // get the event in which the student belongs to
+        List<RegistrationEvent> ListOfStudentsRegistrationEvents = registrationEvents.stream()
+                .filter(registrationEvent1 -> registrationEvent1.getRegistrationGroups().stream()
+                        .anyMatch(registrationGroup -> registrationGroup.getStudents().stream()
+                                .anyMatch(student -> student.getId() == id))).toList();
+
+        // each student has two registration events
+        // the first for (FPP and MPP) and the second for the rest of the courses
+        // if the student is Mpp track then the first registration event is for MPP only
+
+
+
+        LocalDate latestDate = LocalDate.now();
+
+        // compare the latest date with the start date of the registration event
+        // then return the registration event that is closer to the current date
+        // Create a localdate form string
+        //LocalDate localDate = LocalDate.parse(registrationEventList.get(0).getEndDate());
+
+
+        var differenceToFirstEvent = latestDate.compareTo(ListOfStudentsRegistrationEvents.get(0).getEndDate());
+        var differenceToSecondEvent = latestDate.compareTo(ListOfStudentsRegistrationEvents.get(1).getEndDate());
+
+
+        // compare the difference between the two events
+        var registrationEvent = differenceToFirstEvent > differenceToSecondEvent ? ListOfStudentsRegistrationEvents.get(1) : ListOfStudentsRegistrationEvents.get(0);
+        String registrationEventStatus = registrationEvent.getStartDate().isBefore(LocalDate.now()) && registrationEvent.getEndDate().isAfter(LocalDate.now()) ? "registration is Open" : "registration is Closed";
+
+        RegistrationEventWOStudentList registrationEventWOStudentList = modelMapper.map(registrationEvent, RegistrationEventWOStudentList.class);
+        registrationEventWOStudentList.setStatus(registrationEventStatus);
+        return registrationEventWOStudentList;
 
     }
 
