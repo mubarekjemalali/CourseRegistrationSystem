@@ -18,7 +18,7 @@ public interface StudentService {
 
     String deleteStudent(long id);
 
-    String addRegistrationRequests(List<RegistrationRequest> registrationRequests, long id);
+    String addRegistrationRequests(List<RegistrationRequestDto> registrationRequestsDtos, long id);
 
     RegistrationRequestDto addRegistrationRequest(RegistrationRequestDto registrationRequestDto, CourseOfferingDto courseOfferingDto, long studentId);
 
