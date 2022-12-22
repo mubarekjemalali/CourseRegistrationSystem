@@ -1,8 +1,10 @@
 package com.example.courseregistrationsystem.service.impl;
 
 import com.example.courseregistrationsystem.domain.CourseOffering;
+import com.example.courseregistrationsystem.domain.RegistrationGroup;
 import com.example.courseregistrationsystem.domain.RegistrationRequest;
 import com.example.courseregistrationsystem.domain.Student;
+import com.example.courseregistrationsystem.repo.CourseOfferingRepository;
 import com.example.courseregistrationsystem.service.RegistrationEventService;
 import com.example.courseregistrationsystem.service.RegistrationRequestService;
 import com.example.courseregistrationsystem.service.dto.*;
@@ -12,19 +14,24 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.persistence.Temporal;
+import javax.transaction.Transactional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
     @Autowired
-    private ModelMapper modelMapper;
+    private ModelMapper mapper;
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
     private RegistrationRequestService registrationRequestService;
     @Autowired
     private RegistrationEventService registrationEventService;
+
+    @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
 //    @Override
     public RegistrationEventWOStudentList getRegistrationEvent(long id) {
 
@@ -41,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = studentRepository.findAll();
         return studentRepository.findAll()
                 .stream()
-                .map(student -> modelMapper.map(student, StudentDto.class)).collect(Collectors.toList());
+                .map(student -> mapper.map(student, StudentDto.class)).collect(Collectors.toList());
 
     }
 
@@ -49,33 +56,73 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto getStudentById(long id) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
-        return modelMapper.map(student, StudentDto.class);
+        return mapper.map(student, StudentDto.class);
     }
 
     // add student
     @Override
     public StudentDto addStudent(StudentDto studentDto) {
 
-        Student student = studentRepository.save(modelMapper.map(studentDto, Student.class));
-        return  modelMapper.map(student, StudentDto.class);
+        Student student = studentRepository.save(mapper.map(studentDto, Student.class));
+        return  mapper.map(student, StudentDto.class);
     }
 
 
     @Override
     public StudentDto updateStudent(long id, StudentDto studentDto) {
-        Student student = studentRepository.save(modelMapper.map(studentDto, Student.class));
-        return modelMapper.map(student, StudentDto.class);
+        Student student = studentRepository.save(mapper.map(studentDto, Student.class));
+        return mapper.map(student, StudentDto.class);
     }
 
     @Override
     public String deleteStudent(long id) {
         studentRepository.deleteById(id);
+//        studentRepository.deleteById(id);
         return "Student with id: " + id + " has been deleted";
     }
 
     @Override
-    public String addRegistrationRequests(List<RegistrationRequest> registrationRequests, long id) {
+    public String addRegistrationRequests(List<RegistrationRequestDto> registrationRequestsDtos, long id) {
+        System.out.println("printing id    " + id);
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        System.out.println(student.getFirstName());
+        // group the registration requests by course offering then academic block
+
+
+        // get the course offering id from the user input(registration request)
+        //get the course offering from the db using the id
+        // set the course offering of the registration request to the course offering from the db
+        registrationRequestsDtos.stream()
+                .forEach(registrationRequestDto -> {
+
+                    registrationRequestDto.setCourseOffering(mapper.map(courseOfferingRepository
+                            .findById(registrationRequestDto.getCourseOffering().getId())
+                            .orElseThrow(() -> new RuntimeException("Course Offering not found")), CourseOfferingDto.class));
+
+                });
+
+
+
+        Map<AcademicBlockDto, List<RegistrationRequestDto>> registrationRequestDtosPerBlock = registrationRequestsDtos.stream()
+                .collect(Collectors.groupingBy(registrationRequestsDto -> registrationRequestsDto.getCourseOffering().getAcademicBlock()));
+
+
+
+
+
+        Set<RegistrationRequestDto> tempRegistrationRequestDtos = new HashSet<>();
+
+        registrationRequestDtosPerBlock.forEach((academicBlockDto, registrationRequestDtos) -> {
+            registrationRequestDtos.stream()
+                    .forEach(registrationRequestDto -> tempRegistrationRequestDtos.add(registrationRequestDto));
+            if(tempRegistrationRequestDtos.size() < registrationRequestDtos.size()) {
+                throw new RuntimeException("You can only register for one course per academic block");
+            }
+        });
+        List<RegistrationRequest> registrationRequests = registrationRequestsDtos.stream()
+                .map(registrationRequestDto -> mapper.map(registrationRequestDto, RegistrationRequest.class))
+                .collect(Collectors.toList());
+
         student.setRegistrationRequests(registrationRequests);
         studentRepository.save(student);
         return "registration request has been added";
@@ -84,9 +131,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegistrationRequestDto addRegistrationRequest(RegistrationRequestDto registrationRequestDto, CourseOfferingDto courseOfferingDto, long studentId) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
-        RegistrationRequest registrationRequest = modelMapper.map(registrationRequestDto, RegistrationRequest.class);
-        registrationRequest.setCourseOffering(modelMapper.map(courseOfferingDto, CourseOffering.class));
-        student.getRegistrationRequests().add(modelMapper.map(registrationRequestDto, RegistrationRequest.class));
+        RegistrationRequest registrationRequest = mapper.map(registrationRequestDto, RegistrationRequest.class);
+        registrationRequest.setCourseOffering(mapper.map(courseOfferingDto, CourseOffering.class));
+        student.getRegistrationRequests().add(mapper.map(registrationRequestDto, RegistrationRequest.class));
         studentRepository.save(student);
         return registrationRequestService.createRegistrationRequest(registrationRequest);
     }
@@ -95,7 +142,7 @@ public class StudentServiceImpl implements StudentService {
     public List<RegistrationRequestDto> getRegistrationRequests(long id) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
         List<RegistrationRequest> registrationRequests = student.getRegistrationRequests();
-        return registrationRequests.stream().map(registrationRequest -> modelMapper.map(registrationRequest, RegistrationRequestDto.class)).collect(Collectors.toList());
+        return registrationRequests.stream().map(registrationRequest -> mapper.map(registrationRequest, RegistrationRequestDto.class)).collect(Collectors.toList());
     }
 
 }

@@ -51,17 +51,18 @@ public class StudentController {
         try {
             return ResponseEntity.ok().body(studentService.deleteStudent(id));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Student not found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     // add registration requests for a student
+    // passing list of registration requests
     @PatchMapping("/{id}/registration-requests")
-    public ResponseEntity<String> addRegistrationRequest(@PathVariable long id, @RequestBody List<RegistrationRequest> registrationRequests) {
+    public ResponseEntity<String> addRegistrationRequests(@PathVariable long id, @RequestBody List<RegistrationRequestDto> registrationRequestsDto) {
         try {
-            return ResponseEntity.ok().body(studentService.addRegistrationRequests(registrationRequests, id));
+            return ResponseEntity.ok().body(studentService.addRegistrationRequests(registrationRequestsDto, id));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Student not found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

@@ -3,16 +3,25 @@ package com.example.courseregistrationsystem.service.impl;
 import com.example.courseregistrationsystem.domain.*;
 import com.example.courseregistrationsystem.repo.RegistrationGroupRepository;
 import com.example.courseregistrationsystem.repo.RegistrationRepository;
+import com.example.courseregistrationsystem.service.dto.AcademicBlockDto;
 import com.example.courseregistrationsystem.service.dto.RegistrationEventDto;
 import com.example.courseregistrationsystem.repo.RegistrationEventRepository;
 import com.example.courseregistrationsystem.service.RegistrationEventService;
 import com.example.courseregistrationsystem.service.dto.RegistrationEventWOStudentList;
+import com.example.courseregistrationsystem.service.dto.RegistrationRequestDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
+
 
 @Service
 public class RegistrationEventServiceImpl implements RegistrationEventService {
@@ -186,6 +195,61 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
         RegistrationEventWOStudentList registrationEventWOStudentList = modelMapper.map(registrationEvent, RegistrationEventWOStudentList.class);
         registrationEventWOStudentList.setStatus(registrationEventStatus);
         return registrationEventWOStudentList;
+
+    }
+
+    @Override
+    public void process(long id) {
+        // get registration event
+        RegistrationEvent registrationEvent = registrationEventRepository.findById(id).orElseThrow(() -> new RuntimeException("Registration Event not found"));
+
+        // get registration groups
+        List<RegistrationGroup> registrationGroups = registrationEvent.getRegistrationGroups();
+
+        // for each registration group
+
+        Map<AcademicBlock, List<RegistrationRequest>> registrationRequestDtosPerBlockPerStudent = new HashMap<>() ;
+
+        List<Map<AcademicBlock, List<RegistrationRequest>>> registrationRequestDtosPerBlockPerStudentList = new ArrayList<>();
+
+        registrationGroups.forEach(registrationGroup -> {
+            registrationGroup.getStudents().forEach(
+
+                    student -> student.getRegistrationRequests()
+                            .forEach(registrationRequest -> {
+                                if(registrationRequestDtosPerBlockPerStudent.containsKey(registrationRequest.getCourseOffering().getAcademicBlock())){
+                                    List<RegistrationRequest> registrationRequests = registrationRequestDtosPerBlockPerStudent.get(registrationRequest.getCourseOffering().getAcademicBlock());
+                                    List<RegistrationRequest> registrationRequestsNew =  new ArrayList<>(registrationRequests);
+                                    registrationRequestsNew.add(registrationRequest);
+                                    registrationRequestDtosPerBlockPerStudent.put(registrationRequest.getCourseOffering().getAcademicBlock(), registrationRequestsNew);
+                                }
+                                else
+                                    registrationRequestDtosPerBlockPerStudent.put(registrationRequest.getCourseOffering().getAcademicBlock(), List.of(registrationRequest));
+
+                                registrationRequestDtosPerBlockPerStudentList.add(registrationRequestDtosPerBlockPerStudent);
+
+                            })
+
+            );
+        });
+
+
+
+
+//        registrationGroups.forEach(registrationGroup -> {
+//            registrationGroup.getStudents().forEach(
+//
+//                    student -> student.getRegistrationRequests()
+//
+//
+//            );
+//        });
+
+        // print the map
+        registrationRequestDtosPerBlockPerStudent.forEach((k,v) -> System.out.println(k + " " + v));
+
+
+
 
     }
 

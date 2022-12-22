@@ -44,13 +44,14 @@ public class RegistrationEventController {
     }
 
     // process registration event
-//    @PutMapping("/{id}")
-//    public void processed(@PathVariable int id, @RequestParam(required = false) boolean processed) {
-//        if (true) {
-//            // assign course to students
-//            registrationEventService.process(id);
-//        }
-//    }
+    @PutMapping("/{id}/process")
+    public void processed(@PathVariable int id, @RequestParam boolean processed) {
+        if (processed) {
+            System.out.println("processed");
+            // assign course to students
+            registrationEventService.process(id);
+        }
+    }
 
     // delete registration event
     @DeleteMapping("/{id}")

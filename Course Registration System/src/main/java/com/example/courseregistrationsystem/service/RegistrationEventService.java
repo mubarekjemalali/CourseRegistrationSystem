@@ -23,4 +23,6 @@ public interface RegistrationEventService {
     void addRegistrationGroupToRegistrationEvent(long registration_event_id, long registration_group_id);
 
     RegistrationEventWOStudentList findLatestByStudentId(long id);
+
+    void process(long id);
 }
