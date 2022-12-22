@@ -88,6 +88,15 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/{id}/registrations")
+    public ResponseEntity<List<RegistrationDto>> getRegistrations(@PathVariable long id) {
+        try {
+            return ResponseEntity.ok().body(studentService.getRegistrations(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     // get the latest registration event
     @GetMapping("/registration-events/latest/{studentId}")
     public ResponseEntity<RegistrationEventWOStudentList> getRegistrationEvent(@PathVariable long studentId) {

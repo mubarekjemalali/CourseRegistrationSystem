@@ -36,9 +36,8 @@ public class Student {
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Registration> registrations;
 
-
-//
-//    @ManyToOne
-//    private RegistrationGroup registrationGroup;
+    public void addRegistration(Registration registration) {
+        registrations.add(registration);
+    }
 
 }

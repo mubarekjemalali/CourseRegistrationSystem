@@ -1,9 +1,6 @@
 package com.example.courseregistrationsystem.service.impl;
 
-import com.example.courseregistrationsystem.domain.CourseOffering;
-import com.example.courseregistrationsystem.domain.RegistrationGroup;
-import com.example.courseregistrationsystem.domain.RegistrationRequest;
-import com.example.courseregistrationsystem.domain.Student;
+import com.example.courseregistrationsystem.domain.*;
 import com.example.courseregistrationsystem.repo.CourseOfferingRepository;
 import com.example.courseregistrationsystem.service.RegistrationEventService;
 import com.example.courseregistrationsystem.service.RegistrationRequestService;
@@ -143,6 +140,13 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
         List<RegistrationRequest> registrationRequests = student.getRegistrationRequests();
         return registrationRequests.stream().map(registrationRequest -> mapper.map(registrationRequest, RegistrationRequestDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RegistrationDto> getRegistrations(long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        List<Registration> registrations = student.getRegistrations();
+        return registrations.stream().map(registration -> mapper.map(registration, RegistrationDto.class)).collect(Collectors.toList());
     }
 
 }

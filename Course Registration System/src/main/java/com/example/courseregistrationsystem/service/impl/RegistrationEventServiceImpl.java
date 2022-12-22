@@ -12,12 +12,10 @@ import com.example.courseregistrationsystem.service.dto.RegistrationRequestDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -88,65 +86,8 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
         return null;
     }
 
-//    @Transactional
-//    public void process(int id) {
-//
-//        // mubarek's suggestion
-//        // get the registration event
-//        RegistrationEvent registrationEvent = registrationEventRepository.findById(1l).get();
-//
-//        // two registration groups in each registration event
-//        List<RegistrationGroup> registrationGroups = registrationEvent.getRegistrationGroups();
-//
-//        // each registration group has a list of students
-//
-//
-//        List<Student> students =
-//                studentRepository
-//                        .findAllByRegistrationGroup_RegistrationEvents_Id(id);
-//
-//        students.stream().forEach(s -> System.out.println(s.getFirstName()));
-//
-//
-//
-//        for (Student student : students) {
-//            for (RegistrationRequest registrationRequest : student.getRegistrationRequests()) {
-//                // search in registration for registration request course offering
-//                Optional<Registration> registration = null;
-//                if (student.getRegistrations() != null) {
-//                     registration = student.getRegistrations().stream()
-//                            .filter(r ->
-//                                    r.getCourseOffering().equals(registrationRequest.getCourseOffering()))
-//                            .findFirst();
-//                }
-//                // search in registration for registration request course offering
-//                Optional<Registration> registrationCurrentRequestBlock = null;
-//                if (student.getRegistrations() != null) {
-//                    registrationCurrentRequestBlock = student.getRegistrations().stream()
-//                            .filter(r ->
-//                                    r.getCourseOffering().getAcademicBlock().equals(registrationRequest.getCourseOffering().getAcademicBlock()))
-//                            .findFirst();
-//                }
-//                // if the student does not have course in registration
-//                // And the student does not have course in block
-//                if ((registration == null || !registration.isPresent()) &&
-//                        (registrationCurrentRequestBlock == null || !registrationCurrentRequestBlock.isPresent())) {
-//                    // if there is available seats
-//                    if (registrationRequest.getCourseOffering().getCapacity()
-//                            - registrationRequest.getCourseOffering().getRegistrations().size() > 0) {
-//                        // register the student for this course
-//                        Registration newRegistration = Registration.builder()
-//                                .student(student)
-//                                .courseOffering(registrationRequest.getCourseOffering())
-//                                .build();
-//
-//                        registrationRepository.save(newRegistration);
-//                        registrationRequest.getCourseOffering().getRegistrations().add(newRegistration);
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+
 
     @Override
     public void addRegistrationGroupToRegistrationEvent(long registration_event_id, long registration_group_id) {
@@ -198,59 +139,119 @@ public class RegistrationEventServiceImpl implements RegistrationEventService {
 
     }
 
-    @Override
-    public void process(long id) {
-        // get registration event
-        RegistrationEvent registrationEvent = registrationEventRepository.findById(id).orElseThrow(() -> new RuntimeException("Registration Event not found"));
-
-        // get registration groups
-        List<RegistrationGroup> registrationGroups = registrationEvent.getRegistrationGroups();
-
-        // for each registration group
-
-        Map<AcademicBlock, List<RegistrationRequest>> registrationRequestDtosPerBlockPerStudent = new HashMap<>() ;
-
-        List<Map<AcademicBlock, List<RegistrationRequest>>> registrationRequestDtosPerBlockPerStudentList = new ArrayList<>();
-
-        registrationGroups.forEach(registrationGroup -> {
-            registrationGroup.getStudents().forEach(
-
-                    student -> student.getRegistrationRequests()
-                            .forEach(registrationRequest -> {
-                                if(registrationRequestDtosPerBlockPerStudent.containsKey(registrationRequest.getCourseOffering().getAcademicBlock())){
-                                    List<RegistrationRequest> registrationRequests = registrationRequestDtosPerBlockPerStudent.get(registrationRequest.getCourseOffering().getAcademicBlock());
-                                    List<RegistrationRequest> registrationRequestsNew =  new ArrayList<>(registrationRequests);
-                                    registrationRequestsNew.add(registrationRequest);
-                                    registrationRequestDtosPerBlockPerStudent.put(registrationRequest.getCourseOffering().getAcademicBlock(), registrationRequestsNew);
-                                }
-                                else
-                                    registrationRequestDtosPerBlockPerStudent.put(registrationRequest.getCourseOffering().getAcademicBlock(), List.of(registrationRequest));
-
-                                registrationRequestDtosPerBlockPerStudentList.add(registrationRequestDtosPerBlockPerStudent);
-
-                            })
-
-            );
-        });
-
-
-
-
+//    @Override
+//    public void process(long id) {
+//        // get registration event
+//        RegistrationEvent registrationEvent = registrationEventRepository.findById(id).orElseThrow(() -> new RuntimeException("Registration Event not found"));
+//
+//        // get registration groups
+//        List<RegistrationGroup> registrationGroups = registrationEvent.getRegistrationGroups();
+//
+//        // for each registration group
+//
+//        Map<AcademicBlock, List<RegistrationRequest>> registrationRequestDtosPerBlockPerStudent = new HashMap<>() ;
+//
+//        List<Map<AcademicBlock, List<RegistrationRequest>>> registrationRequestDtosPerBlockPerStudentList = new ArrayList<>();
+//
 //        registrationGroups.forEach(registrationGroup -> {
 //            registrationGroup.getStudents().forEach(
 //
 //                    student -> student.getRegistrationRequests()
+//                            .forEach(registrationRequest -> {
+//                                if(registrationRequestDtosPerBlockPerStudent.containsKey(registrationRequest.getCourseOffering().getAcademicBlock())){
+//                                    List<RegistrationRequest> registrationRequests = registrationRequestDtosPerBlockPerStudent.get(registrationRequest.getCourseOffering().getAcademicBlock());
+//                                    List<RegistrationRequest> registrationRequestsNew =  new ArrayList<>(registrationRequests);
+//                                    registrationRequestsNew.add(registrationRequest);
+//                                    registrationRequestDtosPerBlockPerStudent.put(registrationRequest.getCourseOffering().getAcademicBlock(), registrationRequestsNew);
+//                                }
+//                                else
+//                                    registrationRequestDtosPerBlockPerStudent.put(registrationRequest.getCourseOffering().getAcademicBlock(), List.of(registrationRequest));
 //
+//                                registrationRequestDtosPerBlockPerStudentList.add(registrationRequestDtosPerBlockPerStudent);
+//
+//                            })
 //
 //            );
 //        });
+//
+//
+//
+//
+////        registrationGroups.forEach(registrationGroup -> {
+////            registrationGroup.getStudents().forEach(
+////
+////                    student -> student.getRegistrationRequests()
+////
+////
+////            );
+////        });
+//
+//        // print the map
+//        registrationRequestDtosPerBlockPerStudent.forEach((k,v) -> System.out.println(k + " " + v));
+//
+//
+//
+//
+//    }
 
-        // print the map
-        registrationRequestDtosPerBlockPerStudent.forEach((k,v) -> System.out.println(k + " " + v));
+    @Transactional
+    public void process(long id) {
+
+        // mubarek's suggestion
+        // get the registration event
+        RegistrationEvent registrationEvent = registrationEventRepository.findById(id).get();
+
+        // two registration groups in each registration event
+        List<RegistrationGroup> registrationGroups = registrationEvent.getRegistrationGroups();
+
+        // each registration group has a list of students
+        List<Student> students = new ArrayList<>();
+        registrationGroups.stream()
+                .forEach(registrationGroup -> {
+                    students.addAll(registrationGroup.getStudents());
+                });
+
+        students.stream().forEach(s -> System.out.println(s.getFirstName()));
 
 
 
+        for (Student student : students) {
+            for (RegistrationRequest registrationRequest : student.getRegistrationRequests()) {
+                // search in registration for registration request course offering
+                Optional<Registration> registration = null;
+                if (student.getRegistrations() != null) {
+                    registration = student.getRegistrations().stream()
+                            .filter(r ->
+                                    r.getCourseOffering().equals(registrationRequest.getCourseOffering()))
+                            .findFirst();
+                }
+                // search in registration for registration request course offering
+                Optional<Registration> registrationCurrentRequestBlock = null;
+                if (student.getRegistrations() != null) {
+                    registrationCurrentRequestBlock = student.getRegistrations().stream()
+                            .filter(r ->
+                                    r.getCourseOffering().getAcademicBlock().equals(registrationRequest.getCourseOffering().getAcademicBlock()))
+                            .findFirst();
+                }
+                // if the student does not have course in registration
+                // And the student does not have course in block
+                if ((registration == null || !registration.isPresent()) &&
+                        (registrationCurrentRequestBlock == null || !registrationCurrentRequestBlock.isPresent())) {
+                    // if there is available seats
+                    int availableSeats = registrationRequest.getCourseOffering().getCapacity()
+                            - registrationRepository.findAllByCourseOffering_Id(registrationRequest.getCourseOffering().getId()).size();
+                    if (availableSeats > 0) {
+                        // register the student for this course
+                        Registration newRegistration = Registration.builder()
+                                .courseOffering(registrationRequest.getCourseOffering())
+                                .build();
 
+                        registrationRepository.save(newRegistration);
+                        student.addRegistration(newRegistration);
+                    }
+                }
+            }
+        }
     }
 
 

@@ -19,8 +19,6 @@ public class Registration {
     @OneToOne
     private CourseOffering courseOffering;
 
-//    public Registration() {
-//
-//    }
+
 
 }

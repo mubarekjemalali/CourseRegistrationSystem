@@ -1,5 +1,6 @@
 package com.example.courseregistrationsystem.service;
 
+import com.example.courseregistrationsystem.domain.Registration;
 import com.example.courseregistrationsystem.domain.RegistrationRequest;
 import com.example.courseregistrationsystem.service.dto.*;
 
@@ -23,6 +24,8 @@ public interface StudentService {
     RegistrationRequestDto addRegistrationRequest(RegistrationRequestDto registrationRequestDto, CourseOfferingDto courseOfferingDto, long studentId);
 
     List<RegistrationRequestDto> getRegistrationRequests(long id);
+
+    List<RegistrationDto> getRegistrations(long id);
 
 //    StudentDto addStudent(StudentDto studentDto);
 }
