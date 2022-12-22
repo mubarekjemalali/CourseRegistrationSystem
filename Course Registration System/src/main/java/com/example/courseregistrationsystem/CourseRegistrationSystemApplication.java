@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
+@EnableScheduling
 public class CourseRegistrationSystemApplication  {
 
     @Bean
